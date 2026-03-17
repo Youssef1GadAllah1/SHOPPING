@@ -19,22 +19,24 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     // bug 1
     email.dispose();
+    pass.dispose();
     super.dispose();
   }
 
   void _login() {
 
     // BUG 2 – 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
-
+   
     if (_formkey.currentState!.validate()) {
 
       //  BUG 3 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
+      ); 
+      ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
+
     }
   }
 
@@ -67,6 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value == null || value.isEmpty) {
                       return 'invalid email';
                     }
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return 'PLZ Enter a valid email';
+                    }
                     return null;
                   },
                   decoration: const InputDecoration(
@@ -84,7 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: (value) {
                     // BUG 5 
                     if (value == null || value.isEmpty) {
-                      return 'invalid email';
+                      return 'invalid password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
                     }
                     return null;
                   },

@@ -20,9 +20,9 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Center(
               // BUG 8
-              child: Text(provider.total.toString()),
+              child: Text(provider.total.toStringAsFixed(2)),
             ),
-          )
+          ),
         ],
       ),
      body: provider.products.isEmpty
@@ -44,7 +44,14 @@ class HomeScreen extends StatelessWidget {
             price: "${p.price} LE",
             imageUrl: p.imageUrl,
             // BUG 9
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProductDetailsScreen(product: p),
+                ),
+              );
+            },
           );
         },
       ),
